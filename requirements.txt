@@ -1,17 +1,36 @@
+# Web framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# Database
+sqlalchemy==2.0.35
+alembic==1.13.3
+psycopg2-binary==2.9.9
+
+# Settings & validation
+pydantic==2.9.2
+pydantic-settings==2.5.2
+
+# HTTP client (GitHub API)
+requests==2.32.3
 certifi==2025.1.31
 charset-normalizer==3.4.1
-et_xmlfile==2.0.0
 idna==3.10
-kagglehub==0.3.10
+urllib3==2.3.0
+
+# Scheduler
+APScheduler==3.10.4
+
+# Logging
+python-json-logger==2.0.7
+
+# Metrics computation (reused from original ETL)
 numpy==2.2.3
-openpyxl==3.1.5
-packaging==24.2
-pandas==2.2.3
+
+# Utilities
 python-dateutil==2.9.0.post0
 pytz==2025.1
-PyYAML==6.0.2
-requests==2.32.3
-six==1.17.0
-tqdm==4.67.1
 tzdata==2025.1
-urllib3==2.3.0
+
+# AI integration (optional, Fase 2 - uncomment when ready)
+# google-generativeai==0.8.3

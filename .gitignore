@@ -68,3 +68,10 @@ logs/*
 notes.txt
 notes.ipynb
 index.html
+
+# Docker / local secrets
+.env.local
+docker-compose.override.yml
+
+# Alembic generated (keep versions in git)
+# alembic/versions/ is intentionally tracked
