@@ -39,7 +39,7 @@ cp .env.example .env
 Editar `.env` e preencher:
 
 ```
-POSTGRES_PASSWORD=escolha_uma_senha_forte
+POSTGRES_PASSWORD=sua_senha_aqui
 GITHUB_TOKEN=ghp_seu_token_aqui
 ```
 
@@ -169,21 +169,6 @@ meridian/
 ├── requirements.txt
 └── .env.example
 ```
-
----
-
-## Configuração detalhada
-
-Todas as variáveis estão documentadas em `.env.example`.
-
-| Variável | Default | Descrição |
-|---|---|---|
-| `GITHUB_TOKEN` | (vazio) | Token GitHub para rate limit de 5.000 req/h |
-| `LANGUAGES` | `python,javascript,typescript,go,rust` | Linguagens a coletar (separadas por vírgula) |
-| `COLLECT_INTERVAL_HOURS` | `6` | Frequência de coleta em horas |
-| `REPOS_PER_LANGUAGE` | `100` | Quantidade de repos por linguagem |
-| `AI_ENABLED` | `false` | Ativa integração com Gemini (Fase 2) |
-| `LOG_LEVEL` | `INFO` | Nível de log (DEBUG, INFO, WARNING, ERROR) |
 
 ---
 
