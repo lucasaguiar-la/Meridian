@@ -29,21 +29,27 @@ function GitHubIcon() {
   )
 }
 
+const PERIOD_OPTIONS = [30, 90, 180, 365]
+
 export default function RepoDetail() {
   const { id } = useParams()
   const [repo, setRepo] = useState(null)
   const [history, setHistory] = useState([])
   const [loading, setLoading] = useState(true)
+  const [historyLoading, setHistoryLoading] = useState(false)
+  const [days, setDays] = useState(90)
 
   useEffect(() => {
     setLoading(true)
-    Promise.all([getRepository(id), getRepositoryHistory(id, 90)]).then(
-      ([r, h]) => {
-        setRepo(r)
-        setHistory(h?.data ?? [])
-      }
-    ).finally(() => setLoading(false))
+    getRepository(id).then(r => setRepo(r)).finally(() => setLoading(false))
   }, [id])
+
+  useEffect(() => {
+    setHistoryLoading(true)
+    getRepositoryHistory(id, days)
+      .then(h => setHistory(h?.data ?? []))
+      .finally(() => setHistoryLoading(false))
+  }, [id, days])
 
   if (loading) {
     return (
@@ -160,14 +166,39 @@ export default function RepoDetail() {
       )}
 
       {/* History chart */}
-      {history.length > 1 && (
-        <div className="bg-card border border-edge rounded-xl p-5">
-          <p className="text-xs uppercase tracking-widest text-soft mb-5">
-            Histórico de estrelas (90 dias)
+      <div className="bg-card border border-edge rounded-xl p-5">
+        <div className="flex items-center justify-between mb-5">
+          <p className="text-xs uppercase tracking-widest text-soft">
+            Histórico de estrelas
           </p>
-          <HistoryChart data={history} />
+          <div className="flex gap-1">
+            {PERIOD_OPTIONS.map(d => (
+              <button
+                key={d}
+                onClick={() => setDays(d)}
+                className={`text-xs px-2.5 py-1 rounded-md transition-colors ${
+                  days === d
+                    ? 'bg-lava text-white'
+                    : 'text-soft border border-edge hover:text-[#e5e5e5] hover:border-lava/50'
+                }`}
+              >
+                {d}d
+              </button>
+            ))}
+          </div>
         </div>
-      )}
+        {historyLoading ? (
+          <div className="flex justify-center py-10">
+            <Spinner />
+          </div>
+        ) : history.length > 1 ? (
+          <HistoryChart data={history} />
+        ) : (
+          <p className="text-center text-soft text-xs py-10">
+            Sem dados suficientes para o período selecionado.
+          </p>
+        )}
+      </div>
 
       {/* Meta info */}
       <div className="bg-card border border-edge rounded-xl p-5 text-xs text-soft space-y-2">
