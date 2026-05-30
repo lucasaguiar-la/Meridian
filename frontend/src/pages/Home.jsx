@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getLanguages } from '../api/client'
+import { getCollectorStatus, getLanguages, getTrending } from '../api/client'
 import LanguageBadge from '../components/LanguageBadge'
 import Spinner from '../components/Spinner'
+import StarsDelta from '../components/StarsDelta'
 
 function HeroFlame() {
   return (
@@ -19,15 +20,48 @@ function HeroFlame() {
   )
 }
 
+function StatCard({ label, value, valueClass = 'text-[#e5e5e5]' }) {
+  return (
+    <div className="bg-card border border-edge rounded-xl px-5 py-4">
+      <p className="text-xs text-soft mb-2 uppercase tracking-wider">{label}</p>
+      <p className={`text-2xl font-mono font-bold tabular leading-none ${valueClass}`}>
+        {value ?? '—'}
+      </p>
+    </div>
+  )
+}
+
+function timeAgo(isoString) {
+  if (!isoString) return '—'
+  const diff = (Date.now() - new Date(isoString).getTime()) / 1000
+  if (diff < 60) return 'agora'
+  if (diff < 3600) return `há ${Math.floor(diff / 60)} min`
+  if (diff < 86400) return `há ${Math.floor(diff / 3600)} h`
+  return `há ${Math.floor(diff / 86400)} dias`
+}
+
+const STATUS_CLASS = {
+  success: 'text-emerald-400',
+  error: 'text-lava',
+  running: 'text-amber-400',
+}
+
 export default function Home() {
   const [languages, setLanguages] = useState([])
   const [loading, setLoading] = useState(true)
+  const [collector, setCollector] = useState(null)
+  const [trending, setTrending] = useState([])
 
   useEffect(() => {
     getLanguages()
       .then((d) => setLanguages(d?.data ?? []))
       .finally(() => setLoading(false))
+    getCollectorStatus().then(setCollector)
+    getTrending(undefined, 7, 5).then((d) => setTrending(d?.data ?? []))
   }, [])
+
+  const totalRepos = languages.reduce((sum, l) => sum + l.repository_count, 0)
+  const lastRun = collector?.last_run
 
   return (
     <div className="space-y-14">
@@ -57,6 +91,69 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Stats row */}
+      <section>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatCard
+            label="Repositórios monitorados"
+            value={totalRepos > 0 ? totalRepos.toLocaleString() : '—'}
+          />
+          <StatCard
+            label="Linguagens ativas"
+            value={languages.length > 0 ? languages.length : '—'}
+          />
+          <StatCard
+            label="Última coleta"
+            value={timeAgo(lastRun?.finished_at)}
+          />
+          <StatCard
+            label="Status"
+            value={lastRun?.status ?? '—'}
+            valueClass={STATUS_CLASS[lastRun?.status] ?? 'text-soft'}
+          />
+        </div>
+      </section>
+
+      {/* Trending this week */}
+      {trending.length > 0 && (
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-xs uppercase tracking-widest text-soft">
+              Em alta esta semana
+            </p>
+            <Link
+              to="/trending"
+              className="text-xs text-soft hover:text-lava transition-colors"
+            >
+              Ver todos
+            </Link>
+          </div>
+          <div className="space-y-2">
+            {trending.map((repo, i) => (
+              <Link
+                key={repo.repository_id}
+                to={`/repo/${repo.repository_id}`}
+                className="flex items-center gap-4 bg-card border border-edge rounded-xl px-5 py-3.5 hover:border-lava/40 hover:bg-raised transition-all"
+              >
+                <span className="text-xs font-mono text-soft w-4 shrink-0">
+                  {i + 1}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[#e5e5e5] truncate">
+                    {repo.full_name}
+                  </p>
+                </div>
+                <LanguageBadge language={repo.language} />
+                <span className="font-mono text-sm text-soft shrink-0">
+                  {repo.stars_count?.toLocaleString()}
+                </span>
+                <StarsDelta value={repo.stars_delta_7d} className="text-xs shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Divider */}
       <div className="border-t border-edge" />

@@ -33,7 +33,7 @@ class Settings(BaseSettings):
 
     # Collector
     collect_interval_hours: int = 6
-    languages: Union[str, List[str]] = ["python", "javascript", "typescript", "go", "rust"]
+    languages: Union[str, List[str]] = ["python", "javascript", "typescript", "go", "rust", "java", "c++", "c#", "kotlin", "swift"]
     repos_per_language: int = 100
 
     @field_validator("languages", mode="before")
