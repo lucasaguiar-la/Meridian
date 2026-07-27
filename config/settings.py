@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     languages: List[str] = ["python", "javascript", "typescript", "go", "rust", "java", "c++", "c#", "kotlin", "swift"]
     repos_per_language: int = 100
 
+    # Job market (Adzuna API, https://developer.adzuna.com)
+    adzuna_app_id: str = ""
+    adzuna_app_key: str = ""
+    adzuna_country: str = "br"
+
     # App
     log_level: str = "INFO"
     app_version: str = "1.0.0"

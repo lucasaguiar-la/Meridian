@@ -4,8 +4,9 @@ from sqlalchemy import select, func, text
 from sqlalchemy.orm import Session
 
 from api.dependencies import get_db
+from api.schemas.market import LanguageMarketOut, MarketSnapshotOut
 from api.schemas.repository import RepositoryOut, RepositoryListOut, RepositoryListMeta, SnapshotOut
-from db.models import Repository, RepositorySnapshot
+from db.models import JobMarketSnapshot, Repository, RepositorySnapshot
 
 router = APIRouter(prefix="/languages", tags=["languages"])
 
@@ -88,4 +89,41 @@ def language_ranking(
     return RepositoryListOut(
         data=items,
         meta=RepositoryListMeta(total=total, language=lang, limit=limit, offset=offset),
+    )
+
+
+@router.get("/{language}/market", response_model=LanguageMarketOut)
+def language_market(language: str, db: Session = Depends(get_db)):
+    """Latest job market snapshot(s) for a language, one per collected source (e.g. Adzuna)."""
+    lang = language.lower()
+
+    latest_subq = (
+        select(
+            JobMarketSnapshot.source,
+            func.max(JobMarketSnapshot.snapshot_date).label("max_date"),
+        )
+        .where(func.lower(JobMarketSnapshot.language) == lang)
+        .group_by(JobMarketSnapshot.source)
+        .subquery("latest_market")
+    )
+
+    stmt = (
+        select(JobMarketSnapshot)
+        .join(
+            latest_subq,
+            (JobMarketSnapshot.source == latest_subq.c.source)
+            & (JobMarketSnapshot.snapshot_date == latest_subq.c.max_date),
+        )
+        .where(func.lower(JobMarketSnapshot.language) == lang)
+    )
+
+    rows = db.scalars(stmt).all()
+    if not rows:
+        raise HTTPException(
+            status_code=404, detail=f"No market data found for language: {language}"
+        )
+
+    return LanguageMarketOut(
+        language=lang,
+        data=[MarketSnapshotOut.model_validate(r) for r in rows],
     )

@@ -134,6 +134,7 @@ npm run preview   # visualizar o build localmente
 | GET | `/collector/status` | Última execução do collector |
 | GET | `/languages` | Lista de linguagens coletadas com contagem |
 | GET | `/languages/{lang}/ranking` | Top repos por linguagem (`metric`: stars, engagement, growth) |
+| GET | `/languages/{lang}/market` | Vagas de emprego abertas por linguagem (fonte: Adzuna, requer `ADZUNA_APP_ID`/`ADZUNA_APP_KEY`) |
 | GET | `/repositories/{id}` | Repositório com último snapshot de métricas |
 | GET | `/repositories/{id}/history` | Série temporal de snapshots (`days`: 1-365) |
 | GET | `/repositories/search/` | Busca por nome ou descrição |
