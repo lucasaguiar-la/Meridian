@@ -19,7 +19,7 @@ class Repository(Base):
     full_name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text)
-    language: Mapped[Optional[str]] = mapped_column(String(100), index=True)
+    language: Mapped[Optional[str]] = mapped_column(String(100))
     html_url: Mapped[Optional[str]] = mapped_column(Text)
     owner_login: Mapped[Optional[str]] = mapped_column(String(100))
     is_fork: Mapped[bool] = mapped_column(Boolean, default=False)

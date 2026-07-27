@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Ranking from './pages/Ranking'
 import Trending from './pages/Trending'
+import Reports from './pages/Reports'
 import RepoDetail from './pages/RepoDetail'
 import Search from './pages/Search'
 
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/ranking/:language" element={<Ranking />} />
           <Route path="/trending" element={<Trending />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="/repo/:id" element={<RepoDetail />} />
           <Route path="/search" element={<Search />} />
         </Routes>
