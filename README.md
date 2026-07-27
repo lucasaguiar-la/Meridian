@@ -21,6 +21,8 @@ Plataforma de insights sobre repositórios do GitHub por linguagem. Coleta dados
 - Trending: repositórios com maior crescimento de estrelas nos últimos 7 ou 30 dias
 - Busca por nome ou descrição com filtro de linguagem
 - Detalhe do repositório com gráfico histórico de estrelas
+- Relatórios semanais e mensais por linguagem (top por estrelas, engajamento e crescimento), com geração sob demanda pela interface
+- Radar de mercado de trabalho por linguagem (fontes: Adzuna e RemoteOK), comparando popularidade no GitHub com demanda de vagas
 - API REST documentada com Swagger UI
 - Logs estruturados (JSON), health checks e registro de cada execução do collector
 
@@ -45,6 +47,15 @@ GITHUB_TOKEN=ghp_seu_token_aqui
 
 O `GITHUB_TOKEN` aumenta o rate limit de 60 para 5.000 requests/hora.
 Crie um em [github.com/settings/tokens](https://github.com/settings/tokens) (escopo `public_repo` é suficiente).
+
+Opcional, para o radar de mercado de trabalho por linguagem:
+
+```
+ADZUNA_APP_ID=seu_app_id
+ADZUNA_APP_KEY=sua_app_key
+```
+
+Crie uma conta gratuita em [developer.adzuna.com](https://developer.adzuna.com) para obter essas credenciais. Sem elas, a fonte Adzuna fica desativada (erro tratado, sem quebrar a coleta) e só a fonte RemoteOK (não exige credenciais) é usada.
 
 ### 2. Subir os containers
 
@@ -102,6 +113,12 @@ Rodar o collector manualmente (uma única coleta):
 python -c "from collector.pipeline import run_full_collection; run_full_collection()"
 ```
 
+Rodar a coleta de mercado de trabalho manualmente (Adzuna + RemoteOK):
+
+```bash
+python -c "from collector.market_pipeline import run_full_market_collection; print(run_full_market_collection())"
+```
+
 ### Frontend
 
 Pré-requisito: Node.js 20+. A API deve estar rodando em `localhost:8000`.
@@ -151,7 +168,7 @@ Documentação interativa completa em `http://localhost:8000/docs`.
 ```
 meridian/
 ├── api/                  # FastAPI: routers, schemas, dependencias
-├── collector/            # ETL: github_client, pipeline, scheduler
+├── collector/            # ETL: github_client, market_client, pipeline, market_pipeline, scheduler
 ├── core/                 # Logica de dominio pura (transformer, metrics)
 ├── db/                   # Models SQLAlchemy, session, migrations Alembic
 ├── ai/                   # Integracao Gemini (Fase 2)
@@ -160,7 +177,7 @@ meridian/
 │   ├── src/
 │   │   ├── api/          # client.js: funções fetch para a API
 │   │   ├── components/   # Navbar, RepoCard, HistoryChart, badges...
-│   │   └── pages/        # Home, Ranking, Trending, RepoDetail, Search
+│   │   └── pages/        # Home, Ranking, Trending, Reports, RepoDetail, Search
 │   ├── Dockerfile
 │   └── nginx.conf
 ├── tests/
@@ -175,7 +192,7 @@ meridian/
 
 ## Roadmap
 
-- **Fase 1 (atual):** MVP com coleta, API REST, frontend React, Docker, migrations, logs
+- **Fase 1 (atual):** MVP com coleta, API REST, frontend React, Docker, migrations, logs, relatórios semanais/mensais e radar de mercado de trabalho por linguagem (Adzuna + RemoteOK)
 - **Fase 2:** Integração Gemini para resumos de IA, CI/CD com GitHub Actions
 - **Fase 3:** Redis cache, Celery workers, alertas por webhook, relatórios em PDF
 - **Fase 4:** Dashboard avançado, autenticação, Prometheus + Grafana, multiusuário
