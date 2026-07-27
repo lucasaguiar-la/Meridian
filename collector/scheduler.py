@@ -45,7 +45,7 @@ def start():
     logger.info(
         "Scheduler started. Collection interval: every %d hours. Languages: %s",
         settings.collect_interval_hours,
-        ", ".join(settings.languages),
+        settings.languages,
     )
 
     # Run immediately on startup so the first collection doesn't wait

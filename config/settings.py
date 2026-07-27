@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings
-from typing import List
 
 
 class Settings(BaseSettings):
@@ -16,7 +15,10 @@ class Settings(BaseSettings):
 
     # Collector
     collect_interval_hours: int = 6
-    languages: List[str] = ["python", "javascript", "typescript", "go", "rust", "java", "c++", "c#", "kotlin", "swift"]
+    # Comma-separated list of languages (kept as a plain str, not List[str]:
+    # pydantic-settings tries to JSON-decode complex types read from env/.env,
+    # which breaks a plain comma-separated value like "python,javascript,...").
+    languages: str = "python,javascript,typescript,go,rust,java,c++,c#,kotlin,swift"
     repos_per_language: int = 100
 
     # Job market (Adzuna API, https://developer.adzuna.com)
@@ -31,6 +33,9 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        # .env carries docker-compose-only keys (POSTGRES_DB/USER/PASSWORD) that
+        # this model doesn't declare; without this they'd fail as forbidden extras.
+        extra = "ignore"
 
 
 settings = Settings()

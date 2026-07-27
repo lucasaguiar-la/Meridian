@@ -13,14 +13,56 @@ router = APIRouter(prefix="/languages", tags=["languages"])
 
 @router.get("")
 def list_languages(db: Session = Depends(get_db)) -> dict:
+    # Latest job market snapshot per (language, source), summed across sources,
+    # so each language gets a single open_positions_count alongside repository_count.
+    latest_market_subq = (
+        select(
+            JobMarketSnapshot.language,
+            JobMarketSnapshot.source,
+            func.max(JobMarketSnapshot.snapshot_date).label("max_date"),
+        )
+        .group_by(JobMarketSnapshot.language, JobMarketSnapshot.source)
+        .subquery("latest_market")
+    )
+
+    market_totals_subq = (
+        select(
+            JobMarketSnapshot.language,
+            func.sum(JobMarketSnapshot.open_positions_count).label("open_positions_count"),
+        )
+        .join(
+            latest_market_subq,
+            (JobMarketSnapshot.language == latest_market_subq.c.language)
+            & (JobMarketSnapshot.source == latest_market_subq.c.source)
+            & (JobMarketSnapshot.snapshot_date == latest_market_subq.c.max_date),
+        )
+        .group_by(JobMarketSnapshot.language)
+        .subquery("market_totals")
+    )
+
     rows = db.execute(
-        select(Repository.language, func.count(Repository.id).label("count"))
+        select(
+            Repository.language,
+            func.count(Repository.id).label("count"),
+            market_totals_subq.c.open_positions_count,
+        )
+        .outerjoin(
+            market_totals_subq,
+            func.lower(Repository.language) == market_totals_subq.c.language,
+        )
         .where(Repository.language.isnot(None))
-        .group_by(Repository.language)
+        .group_by(Repository.language, market_totals_subq.c.open_positions_count)
         .order_by(func.count(Repository.id).desc())
     ).all()
     return {
-        "data": [{"language": r.language, "repository_count": r.count} for r in rows]
+        "data": [
+            {
+                "language": r.language,
+                "repository_count": r.count,
+                "open_positions_count": r.open_positions_count,
+            }
+            for r in rows
+        ]
     }
 
 

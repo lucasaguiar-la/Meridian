@@ -21,9 +21,9 @@ class AdzunaClient:
         app_key: Optional[str] = None,
         country: Optional[str] = None,
     ):
-        self._app_id = app_id or settings.adzuna_app_id
-        self._app_key = app_key or settings.adzuna_app_key
-        self._country = country or settings.adzuna_country
+        self._app_id = app_id if app_id is not None else settings.adzuna_app_id
+        self._app_key = app_key if app_key is not None else settings.adzuna_app_key
+        self._country = country if country is not None else settings.adzuna_country
         self._session = requests.Session()
 
     def count_job_postings(self, keyword: str) -> int:
