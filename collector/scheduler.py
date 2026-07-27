@@ -3,6 +3,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
+from collector.market_pipeline import run_full_market_collection
 from collector.pipeline import run_full_collection
 from collector.report_generator import run_monthly_reports, run_weekly_reports
 from config.settings import settings
@@ -18,6 +19,17 @@ def start():
         trigger=IntervalTrigger(hours=settings.collect_interval_hours),
         id="full_collection",
         name="GitHub full collection",
+        replace_existing=True,
+        max_instances=1,
+    )
+
+    # Job market changes slower than GitHub stars, so a longer default interval
+    # is enough (see settings.market_collect_interval_hours).
+    scheduler.add_job(
+        run_full_market_collection,
+        trigger=IntervalTrigger(hours=settings.market_collect_interval_hours),
+        id="full_market_collection",
+        name="Job market collection (Adzuna + RemoteOK)",
         replace_existing=True,
         max_instances=1,
     )
@@ -43,8 +55,10 @@ def start():
     )
 
     logger.info(
-        "Scheduler started. Collection interval: every %d hours. Languages: %s",
+        "Scheduler started. GitHub collection every %d hours. "
+        "Market collection every %d hours. Languages: %s",
         settings.collect_interval_hours,
+        settings.market_collect_interval_hours,
         settings.languages,
     )
 
@@ -54,6 +68,12 @@ def start():
         run_full_collection()
     except Exception as exc:
         logger.error("Initial collection failed: %s", exc)
+
+    logger.info("Running initial market collection on startup...")
+    try:
+        run_full_market_collection()
+    except Exception as exc:
+        logger.error("Initial market collection failed: %s", exc)
 
     scheduler.start()
 

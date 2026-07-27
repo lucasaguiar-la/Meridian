@@ -21,10 +21,11 @@ class Settings(BaseSettings):
     languages: str = "python,javascript,typescript,go,rust,java,c++,c#,kotlin,swift"
     repos_per_language: int = 100
 
-    # Job market (Adzuna API, https://developer.adzuna.com)
+    # Job market (Adzuna API, https://developer.adzuna.com; RemoteOK, no auth needed)
     adzuna_app_id: str = ""
     adzuna_app_key: str = ""
     adzuna_country: str = "br"
+    market_collect_interval_hours: int = 24
 
     # App
     log_level: str = "INFO"

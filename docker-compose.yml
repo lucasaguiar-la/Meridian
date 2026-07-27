@@ -58,6 +58,7 @@ services:
       ADZUNA_APP_ID: ${ADZUNA_APP_ID:-}
       ADZUNA_APP_KEY: ${ADZUNA_APP_KEY:-}
       ADZUNA_COUNTRY: ${ADZUNA_COUNTRY:-br}
+      MARKET_COLLECT_INTERVAL_HOURS: ${MARKET_COLLECT_INTERVAL_HOURS:-24}
     depends_on:
       postgres:
         condition: service_healthy
