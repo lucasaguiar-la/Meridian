@@ -14,7 +14,7 @@ services:
       retries: 5
       start_period: 10s
     ports:
-      - "5444:5432"
+      - "5432:5432"
     restart: unless-stopped
 
   api:

@@ -43,6 +43,7 @@ win_venv/
 ENV/
 env.bak/
 venv.bak/
+node_modules/
 
 # VS Code
 .vscode/
