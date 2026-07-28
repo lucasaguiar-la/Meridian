@@ -13,6 +13,17 @@ async function request(path, params = {}) {
   return res.json()
 }
 
+async function requestPost(path, body = {}) {
+  const url = new URL(BASE + path, window.location.origin)
+  const res = await fetch(url.toString(), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!res.ok) throw new Error(`API error ${res.status}: ${path}`)
+  return res.json()
+}
+
 export const getLanguages = () =>
   request('/languages')
 
@@ -36,3 +47,16 @@ export const getHealth = () =>
 
 export const getCollectorStatus = () =>
   request('/collector/status')
+
+export const getWeeklyReport = (language, period) =>
+  request('/reports/weekly', { language, period })
+
+export const getMonthlyReport = (language, period) =>
+  request('/reports/monthly', { language, period })
+
+export const generateReport = (reportType, language, allLanguages = false) =>
+  requestPost('/reports/generate', {
+    report_type: reportType,
+    language: language || null,
+    all_languages: allLanguages,
+  })

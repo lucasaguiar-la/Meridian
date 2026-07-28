@@ -15,4 +15,4 @@ SUPPORTED_LANGUAGES = [
 
 
 def get_active_languages() -> list[str]:
-    return [lang.lower() for lang in settings.languages]
+    return [lang.strip().lower() for lang in settings.languages.split(",") if lang.strip()]

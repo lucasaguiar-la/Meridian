@@ -1,6 +1,4 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import field_validator, model_validator
-from typing import List, Union, Optional
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -33,25 +31,28 @@ class Settings(BaseSettings):
 
     # Collector
     collect_interval_hours: int = 6
-    languages: Union[str, List[str]] = ["python", "javascript", "typescript", "go", "rust", "java", "c++", "c#", "kotlin", "swift"]
+    # Comma-separated list of languages (kept as a plain str, not List[str]:
+    # pydantic-settings tries to JSON-decode complex types read from env/.env,
+    # which breaks a plain comma-separated value like "python,javascript,...").
+    languages: str = "python,javascript,typescript,go,rust,java,c++,c#,kotlin,swift"
     repos_per_language: int = 100
 
-    @field_validator("languages", mode="before")
-    @classmethod
-    def parse_languages(cls, v: Union[str, List[str]]) -> List[str]:
-        if isinstance(v, str):
-            return [lang.strip() for lang in v.split(",")]
-        return v
+    # Job market (Adzuna API, https://developer.adzuna.com; RemoteOK, no auth needed)
+    adzuna_app_id: str = ""
+    adzuna_app_key: str = ""
+    adzuna_country: str = "br"
+    market_collect_interval_hours: int = 24
 
     # App
     log_level: str = "INFO"
     app_version: str = "1.0.0"
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore" # Ignore extra fields like GITHUB_TOKEN if we don't want to map them all
-    )
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        # .env carries docker-compose-only keys (POSTGRES_DB/USER/PASSWORD) that
+        # this model doesn't declare; without this they'd fail as forbidden extras.
+        extra = "ignore"
 
 
 settings = Settings()

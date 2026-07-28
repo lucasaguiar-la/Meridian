@@ -29,6 +29,9 @@ services:
       AI_ENABLED: ${AI_ENABLED:-false}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       LANGUAGES: ${LANGUAGES:-python,javascript,typescript,go,rust}
+      ADZUNA_APP_ID: ${ADZUNA_APP_ID:-}
+      ADZUNA_APP_KEY: ${ADZUNA_APP_KEY:-}
+      ADZUNA_COUNTRY: ${ADZUNA_COUNTRY:-br}
     ports:
       - "8010:8000"
     depends_on:
@@ -52,6 +55,10 @@ services:
       LANGUAGES: ${LANGUAGES:-python,javascript,typescript,go,rust}
       REPOS_PER_LANGUAGE: ${REPOS_PER_LANGUAGE:-100}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ADZUNA_APP_ID: ${ADZUNA_APP_ID:-}
+      ADZUNA_APP_KEY: ${ADZUNA_APP_KEY:-}
+      ADZUNA_COUNTRY: ${ADZUNA_COUNTRY:-br}
+      MARKET_COLLECT_INTERVAL_HOURS: ${MARKET_COLLECT_INTERVAL_HOURS:-24}
     depends_on:
       postgres:
         condition: service_healthy

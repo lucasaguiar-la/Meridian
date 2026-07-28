@@ -1,6 +1,12 @@
 from datetime import date, datetime
-from typing import Optional, Any
+from typing import Optional, Any, Literal
 from pydantic import BaseModel
+
+
+class ReportGenerateRequest(BaseModel):
+    report_type: Literal["weekly", "monthly"]
+    language: Optional[str] = None
+    all_languages: bool = False
 
 
 class ReportOut(BaseModel):

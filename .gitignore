@@ -48,6 +48,9 @@ node_modules/
 # VS Code
 .vscode/
 
+# Node
+node_modules/
+
 # Local environment files
 *.local
 

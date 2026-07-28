@@ -178,7 +178,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {languages.map(({ language, repository_count }) => (
+            {languages.map(({ language, repository_count, open_positions_count }) => (
               <Link
                 key={language}
                 to={`/ranking/${language}`}
@@ -191,6 +191,13 @@ export default function Home() {
                   {repository_count.toLocaleString()}
                 </p>
                 <p className="text-xs text-soft mt-1.5">repos</p>
+
+                <div className="mt-3 pt-3 border-t border-edge">
+                  <p className="font-mono text-sm font-semibold text-[#e5e5e5] tabular leading-none">
+                    {open_positions_count != null ? open_positions_count.toLocaleString() : '—'}
+                  </p>
+                  <p className="text-xs text-soft mt-1">vagas abertas</p>
+                </div>
               </Link>
             ))}
           </div>

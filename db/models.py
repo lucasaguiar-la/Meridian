@@ -19,7 +19,7 @@ class Repository(Base):
     full_name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text)
-    language: Mapped[Optional[str]] = mapped_column(String(100), index=True)
+    language: Mapped[Optional[str]] = mapped_column(String(100))
     html_url: Mapped[Optional[str]] = mapped_column(Text)
     owner_login: Mapped[Optional[str]] = mapped_column(String(100))
     is_fork: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -117,6 +117,27 @@ class Report(Base):
         UniqueConstraint(
             "report_type", "language", "period_start",
             name="uq_report_per_period",
+        ),
+    )
+
+
+class JobMarketSnapshot(Base):
+    """Aggregated count of open job postings per language, collected from external job market APIs (e.g. Adzuna)."""
+    __tablename__ = "job_market_snapshots"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    language: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    source: Mapped[str] = mapped_column(String(50), nullable=False)
+    snapshot_date: Mapped[date] = mapped_column(Date, nullable=False)
+    open_positions_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    avg_salary: Mapped[Optional[float]] = mapped_column(Float)
+    collected_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "language", "source", "snapshot_date", name="uq_market_snapshot_per_day"
         ),
     )
 

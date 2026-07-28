@@ -1,12 +1,13 @@
 from datetime import date, timedelta
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from api.dependencies import get_db
-from api.schemas.report import ReportOut, TrendingOut
+from api.schemas.report import ReportGenerateRequest, ReportOut, TrendingOut
+from collector.report_generator import generate_report, run_monthly_reports, run_weekly_reports
 from db.models import Report, RepositorySnapshot, Repository
 
 router = APIRouter(prefix="/reports", tags=["reports"])
@@ -95,7 +96,6 @@ def get_weekly_report(
 
     report = db.scalar(stmt.limit(1))
     if not report:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="No weekly report found.")
     return ReportOut.model_validate(report)
 
@@ -116,6 +116,21 @@ def get_monthly_report(
 
     report = db.scalar(stmt.limit(1))
     if not report:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="No monthly report found.")
     return ReportOut.model_validate(report)
+
+
+@router.post("/generate", status_code=201)
+def trigger_report_generation(payload: ReportGenerateRequest):
+    if payload.all_languages:
+        if payload.report_type == "weekly":
+            run_weekly_reports()
+        else:
+            run_monthly_reports()
+        return {"status": "ok", "report_type": payload.report_type, "scope": "all_languages"}
+
+    language = payload.language.lower() if payload.language else None
+    ok = generate_report(payload.report_type, language)
+    if not ok:
+        raise HTTPException(status_code=500, detail="Report generation failed. Check API logs.")
+    return {"status": "ok", "report_type": payload.report_type, "language": language}
