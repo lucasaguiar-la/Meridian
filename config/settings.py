@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     postgres_password: str = "changeme"
     postgres_db: str = "meridian"
     postgres_host: str = "localhost"
-    postgres_port: str = "5434"
+    postgres_port: str = "5444"
 
     @model_validator(mode="after")
     def assemble_database_url(self) -> "Settings":
