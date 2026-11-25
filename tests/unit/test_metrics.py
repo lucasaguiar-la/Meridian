@@ -42,3 +42,19 @@ def test_delta_uses_oldest_snapshot_within_window(db_session):
     _add_snapshot(db_session, 1, today, stars_count=80)
 
     assert get_stars_delta(db_session, repository_id=1, days=7) == 30
+
+
+def test_current_stars_used_when_today_not_saved_yet(db_session):
+    _make_repo(db_session)
+    today = date.today()
+    _add_snapshot(db_session, 1, today - timedelta(days=5), stars_count=50)
+    _add_snapshot(db_session, 1, today - timedelta(days=1), stars_count=60)
+
+    # Without current_stars the delta lags: latest stored is 60.
+    assert get_stars_delta(db_session, repository_id=1, days=7) == 10
+    assert get_stars_delta(db_session, repository_id=1, days=7, current_stars=80) == 30
+
+
+def test_current_stars_without_history_returns_none(db_session):
+    _make_repo(db_session)
+    assert get_stars_delta(db_session, repository_id=1, days=7, current_stars=80) is None

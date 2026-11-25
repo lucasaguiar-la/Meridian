@@ -47,8 +47,14 @@ def _upsert_repository(db: Session, repo_data: dict) -> int:
 
 def _insert_snapshot(db: Session, repo_id: int, repo_data: dict) -> None:
     today = date.today()
-    stars_delta_7d = get_stars_delta(db, repo_id, days=7)
-    stars_delta_30d = get_stars_delta(db, repo_id, days=30)
+    stars = repo_data.get("stargazers_count", 0)
+    # GitHub's `watchers_count` is just an alias of the star count; the real
+    # watchers number is `subscribers_count` (only on the single-repo endpoint).
+    watchers = repo_data.get("subscribers_count") or 0
+
+    # Today's snapshot isn't stored yet, so hand over the current star count.
+    stars_delta_7d = get_stars_delta(db, repo_id, days=7, current_stars=stars)
+    stars_delta_30d = get_stars_delta(db, repo_id, days=30, current_stars=stars)
 
     repo_created = repo_data.get("created_at")
     if repo_created:
@@ -58,9 +64,9 @@ def _insert_snapshot(db: Session, repo_id: int, repo_data: dict) -> None:
         age_days = 365
 
     score = calculate_engagement_score(
-        stars=repo_data.get("stargazers_count", 0),
+        stars=stars,
         forks=repo_data.get("forks_count", 0),
-        watchers=repo_data.get("watchers_count", 0),
+        watchers=watchers,
         open_issues=repo_data.get("open_issues_count", 0),
         repo_age_days=age_days,
         stars_delta_30d=stars_delta_30d or 0,
@@ -71,9 +77,9 @@ def _insert_snapshot(db: Session, repo_id: int, repo_data: dict) -> None:
         .values(
             repository_id=repo_id,
             snapshot_date=today,
-            stars_count=repo_data.get("stargazers_count", 0),
+            stars_count=stars,
             forks_count=repo_data.get("forks_count", 0),
-            watchers_count=repo_data.get("watchers_count", 0),
+            watchers_count=watchers,
             open_issues_count=repo_data.get("open_issues_count", 0),
             network_count=repo_data.get("network_count"),
             subscribers_count=repo_data.get("subscribers_count"),
@@ -84,10 +90,12 @@ def _insert_snapshot(db: Session, repo_id: int, repo_data: dict) -> None:
         .on_conflict_do_update(
             constraint="uq_snapshot_per_day",
             set_={
-                "stars_count": repo_data.get("stargazers_count", 0),
+                "stars_count": stars,
                 "forks_count": repo_data.get("forks_count", 0),
-                "watchers_count": repo_data.get("watchers_count", 0),
+                "watchers_count": watchers,
                 "open_issues_count": repo_data.get("open_issues_count", 0),
+                "network_count": repo_data.get("network_count"),
+                "subscribers_count": repo_data.get("subscribers_count"),
                 "engagement_score": score,
                 "stars_delta_7d": stars_delta_7d,
                 "stars_delta_30d": stars_delta_30d,

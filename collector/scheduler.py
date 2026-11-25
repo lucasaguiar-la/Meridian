@@ -6,6 +6,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from collector.market_pipeline import run_full_market_collection
 from collector.pipeline import run_full_collection
 from collector.report_generator import run_monthly_reports, run_weekly_reports
+from collector.wait_for_db import wait_for_migrations
 from config.settings import settings
 
 logger = logging.getLogger("meridian.scheduler")
@@ -61,6 +62,12 @@ def start():
         settings.market_collect_interval_hours,
         settings.languages,
     )
+
+    # The api service runs `alembic upgrade head`; don't collect before it's done.
+    if not wait_for_migrations():
+        logger.error(
+            "Migrations not applied; initial collections may fail until the next run."
+        )
 
     # Run immediately on startup so the first collection doesn't wait
     logger.info("Running initial collection on startup...")
