@@ -68,7 +68,7 @@ export default function Search() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-lg font-semibold text-[#e5e5e5]">Buscar Repositórios</h1>
+      <h1 className="text-lg font-semibold text-paper">Buscar Repositórios</h1>
 
       {/* Search controls */}
       <div className="flex gap-3 flex-wrap">
@@ -79,14 +79,14 @@ export default function Search() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar por nome ou descrição..."
-            className="w-full bg-card border border-edge rounded-lg pl-9 pr-4 py-2.5 text-sm text-[#e5e5e5] placeholder:text-soft focus:border-lava focus:outline-none transition-colors"
+            className="w-full bg-card border border-edge rounded-lg pl-9 pr-4 py-2.5 text-sm text-paper placeholder:text-soft focus:border-lava focus:outline-none transition-colors"
           />
         </div>
 
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
-          className="bg-card border border-edge rounded-lg px-3 py-2.5 text-sm text-[#e5e5e5] focus:border-lava focus:outline-none transition-colors"
+          className="bg-card border border-edge rounded-lg px-3 py-2.5 text-sm text-paper focus:border-lava focus:outline-none transition-colors"
         >
           <option value="">Todas linguagens</option>
           {languages.map((l) => (

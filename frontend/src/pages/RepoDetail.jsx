@@ -12,7 +12,7 @@ function MetricCard({ label, value, muted = false }) {
       <p className="text-xs text-soft mb-2 uppercase tracking-wider">{label}</p>
       <p
         className={`text-2xl font-mono font-bold tabular leading-none ${
-          muted ? 'text-soft' : 'text-[#e5e5e5]'
+          muted ? 'text-soft' : 'text-paper'
         }`}
       >
         {value ?? '—'}
@@ -91,7 +91,7 @@ export default function RepoDetail() {
           </>
         )}
         <span className="text-edge">›</span>
-        <span className="text-[#e5e5e5] truncate max-w-xs">{repo.name}</span>
+        <span className="text-paper truncate max-w-xs">{repo.name}</span>
       </nav>
 
       {/* Repo header */}
@@ -99,7 +99,7 @@ export default function RepoDetail() {
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <h1 className="text-2xl font-bold text-[#e5e5e5] break-all">
+              <h1 className="text-2xl font-bold text-paper break-all">
                 {repo.full_name}
               </h1>
               <LanguageBadge language={repo.language} />
@@ -121,7 +121,7 @@ export default function RepoDetail() {
               href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 flex items-center gap-2 px-4 py-2 bg-card border border-edge rounded-lg text-sm text-[#e5e5e5] hover:border-lava/50 hover:text-lava transition-all"
+              className="shrink-0 flex items-center gap-2 px-4 py-2 bg-card border border-edge rounded-lg text-sm text-paper hover:border-lava/50 hover:text-lava transition-all"
             >
               <GitHubIcon />
               GitHub
@@ -179,7 +179,7 @@ export default function RepoDetail() {
                 className={`text-xs px-2.5 py-1 rounded-md transition-colors ${
                   days === d
                     ? 'bg-lava text-white'
-                    : 'text-soft border border-edge hover:text-[#e5e5e5] hover:border-lava/50'
+                    : 'text-soft border border-edge hover:text-paper hover:border-lava/50'
                 }`}
               >
                 {d}d
@@ -205,13 +205,13 @@ export default function RepoDetail() {
         {repo.owner_login && (
           <p>
             Criado por{' '}
-            <span className="text-[#e5e5e5] font-medium">@{repo.owner_login}</span>
+            <span className="text-paper font-medium">@{repo.owner_login}</span>
           </p>
         )}
         {repo.created_at && (
           <p>
             Data de criação:{' '}
-            <span className="text-[#e5e5e5]">
+            <span className="text-paper">
               {new Date(repo.created_at).toLocaleDateString('pt-BR', {
                 year: 'numeric',
                 month: 'long',
@@ -222,7 +222,7 @@ export default function RepoDetail() {
         )}
         <p>
           GitHub ID:{' '}
-          <span className="font-mono text-[#e5e5e5]">{repo.id}</span>
+          <span className="font-mono text-paper">{repo.id}</span>
         </p>
       </div>
     </div>

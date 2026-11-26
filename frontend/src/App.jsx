@@ -9,7 +9,7 @@ import Search from './pages/Search'
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-canvas text-[#e5e5e5]">
+    <div className="min-h-screen bg-canvas text-paper">
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Routes>

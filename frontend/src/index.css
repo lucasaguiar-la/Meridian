@@ -2,12 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fontes da identidade (latin). Os arquivos são servidos com hash pelo Vite. */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/inter-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/space-grotesk-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/fonts/space-grotesk-latin-700-normal.woff2') format('woff2');
+}
+
 :root {
-  --lava: #ff4500;
-  --canvas: #0a0a0a;
-  --card: #141414;
-  --raised: #1e1e1e;
-  --edge: #2a2a2a;
+  /* Tokens da marca */
+  --meridian-grafite: #12151C;
+  --meridian-vermelhao: #FF4500;
+  --meridian-papel: #F3EFE6;
+  --meridian-pedra: #8A8578;
+  --meridian-giz: #FFFFFF;
+  --meridian-font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --meridian-font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --meridian-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --meridian-radius-card: 16px;
+  --meridian-radius-chip: 999px;
+
+  /* Superfícies do app (mesmos valores do tailwind.config.js) */
+  --lava: var(--meridian-vermelhao);
+  --canvas: var(--meridian-grafite);
+  --card: #191D26;
+  --raised: #222732;
+  --edge: #2E3440;
+  --paper: var(--meridian-papel);
   --up: #22c55e;
   --down: #ef4444;
 }
@@ -18,7 +83,7 @@
 
 body {
   background-color: var(--canvas);
-  color: #e5e5e5;
+  color: var(--paper);
   font-family: Inter, system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -27,7 +92,7 @@ body {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--canvas); }
 ::-webkit-scrollbar-thumb { background: var(--edge); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+::-webkit-scrollbar-thumb:hover { background: #3A4150; }
 
 :focus-visible {
   outline: 2px solid var(--lava);

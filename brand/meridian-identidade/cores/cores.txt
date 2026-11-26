@@ -1,0 +1,9 @@
+Meridian · paleta Marco
+
+Grafite    #12151C  RGB  18  21  28  CMYK(aprox.) 36 25 0 89  · Cor de base: textos, trilhos do M, fundos escuros.
+Vermelhão  #FF4500  RGB 255  69   0  CMYK(aprox.) 0 73 100 0  · Cor de destaque: a seta, o item ativo, o ponto de atenção. Use em pouco espaço.
+Papel      #F3EFE6  RGB 243 239 230  CMYK(aprox.) 0 2 5 5  · Fundo claro quente e trilhos do M sobre fundo escuro.
+Pedra      #8A8578  RGB 138 133 120  CMYK(aprox.) 0 4 13 46  · Apoio: textos secundários, linhas, estados desativados.
+Giz        #FFFFFF  RGB 255 255 255  CMYK(aprox.) 0 0 0 0  · Branco puro: cartões, textos sobre Vermelhão ou Grafite.
+
+O CMYK é conversão automática do RGB: peça prova de cor antes de imprimir. Pantone não definido.

@@ -71,7 +71,7 @@ gitup.sh
 logs/*
 notes.txt
 notes.ipynb
-index.html
+/index.html
 
 # Docker / local secrets
 .env.local

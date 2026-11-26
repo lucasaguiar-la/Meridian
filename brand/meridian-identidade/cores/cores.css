@@ -1,0 +1,20 @@
+/* Meridian · identidade Marco · tokens */
+:root {
+  --meridian-grafite: #12151C;
+  --meridian-vermelhao: #FF4500;
+  --meridian-papel: #F3EFE6;
+  --meridian-pedra: #8A8578;
+  --meridian-giz: #FFFFFF;
+
+  --meridian-font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --meridian-font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --meridian-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  --meridian-radius-card: 16px;
+  --meridian-radius-chip: 999px;
+}
+
+/* tema claro (marketing, README, documentação) */
+.meridian-light { background: var(--meridian-papel); color: var(--meridian-grafite); }
+/* tema escuro (o app já é escuro; use estes valores no site e nas redes) */
+.meridian-dark { background: var(--meridian-grafite); color: var(--meridian-papel); }

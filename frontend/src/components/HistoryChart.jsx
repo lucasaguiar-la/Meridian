@@ -39,18 +39,18 @@ export default function HistoryChart({ data }) {
   return (
     <ResponsiveContainer width="100%" height={220}>
       <LineChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" vertical={false} />
+        <CartesianGrid strokeDasharray="3 3" stroke="#2E3440" vertical={false} />
         <XAxis
           dataKey="snapshot_date"
           tickFormatter={formatDate}
-          tick={{ fill: '#737373', fontSize: 11 }}
+          tick={{ fill: '#8A8578', fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           interval="preserveStartEnd"
         />
         <YAxis
           tickFormatter={formatK}
-          tick={{ fill: '#737373', fontSize: 11 }}
+          tick={{ fill: '#8A8578', fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           width={44}

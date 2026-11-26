@@ -18,7 +18,7 @@ export default function RepoCard({ repo, deltaKey = 'stars_delta_7d', rank }) {
             {rank != null && (
               <span className="text-lava font-mono text-xs shrink-0">#{rank}</span>
             )}
-            <span className="font-medium text-[#e5e5e5] text-sm truncate">
+            <span className="font-medium text-paper text-sm truncate">
               {repo.full_name}
             </span>
             <LanguageBadge language={repo.language} />
@@ -32,7 +32,7 @@ export default function RepoCard({ repo, deltaKey = 'stars_delta_7d', rank }) {
 
         <div className="flex flex-col items-end gap-1 shrink-0">
           {stars != null && (
-            <span className="font-mono text-sm text-[#e5e5e5] tabular">
+            <span className="font-mono text-sm text-paper tabular">
               ★ {stars.toLocaleString()}
             </span>
           )}

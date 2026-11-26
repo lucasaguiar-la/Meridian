@@ -60,7 +60,7 @@ export default function Reports() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
         <div>
-          <h1 className="text-lg font-semibold text-[#e5e5e5]">Relatórios</h1>
+          <h1 className="text-lg font-semibold text-paper">Relatórios</h1>
           <p className="text-xs text-soft mt-0.5">
             Resumo periódico dos repositórios monitorados
           </p>
@@ -76,7 +76,7 @@ export default function Reports() {
                 className={`px-3 py-1 text-xs rounded transition-all ${
                   reportType === opt.value
                     ? 'bg-lava text-white'
-                    : 'text-soft hover:text-[#e5e5e5]'
+                    : 'text-soft hover:text-paper'
                 }`}
               >
                 {opt.label}
@@ -88,7 +88,7 @@ export default function Reports() {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="bg-card border border-edge rounded-lg px-3 py-1 text-sm text-[#e5e5e5] focus:border-lava focus:outline-none transition-colors"
+            className="bg-card border border-edge rounded-lg px-3 py-1 text-sm text-paper focus:border-lava focus:outline-none transition-colors"
           >
             <option value="">Todas linguagens</option>
             {languages.map((l) => (
@@ -135,7 +135,7 @@ export default function Reports() {
             const repos = content[section.key] ?? []
             return (
               <div key={section.key} className="space-y-3">
-                <h2 className="text-sm font-semibold text-[#e5e5e5]">
+                <h2 className="text-sm font-semibold text-paper">
                   {section.title}
                 </h2>
                 {repos.length === 0 ? (

@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="brand/meridian-identidade/redes-e-readme/readme-header-1600x400-escuro.svg">
+  <img alt="Meridian" src="brand/meridian-identidade/redes-e-readme/readme-header-1600x400-claro.svg">
+</picture>
+
 # Meridian
 
 Plataforma de insights sobre repositórios do GitHub por linguagem. Coleta dados em tempo real via API do GitHub, armazena histórico de métricas e disponibiliza rankings, tendências e análises via API REST e interface web.
@@ -180,6 +185,7 @@ meridian/
 │   │   └── pages/        # Home, Ranking, Trending, Reports, RepoDetail, Search
 │   ├── Dockerfile
 │   └── nginx.conf
+├── brand/                # Identidade visual: guia, tokens, fontes, redes e logos para impressão
 ├── tests/
 ├── Dockerfile
 ├── docker-compose.yml

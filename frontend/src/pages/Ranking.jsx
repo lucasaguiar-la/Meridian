@@ -50,7 +50,7 @@ export default function Ranking() {
       <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
         <div className="flex items-center gap-3">
           <LanguageBadge language={language} className="text-sm px-3 py-1" />
-          <h1 className="text-lg font-semibold text-[#e5e5e5]">Ranking</h1>
+          <h1 className="text-lg font-semibold text-paper">Ranking</h1>
         </div>
 
         <div className="flex flex-wrap gap-3 sm:ml-auto">
@@ -58,7 +58,7 @@ export default function Ranking() {
           <select
             value={language}
             onChange={(e) => navigate(`/ranking/${e.target.value}`)}
-            className="bg-card border border-edge rounded-lg px-3 py-1.5 text-sm text-[#e5e5e5] focus:border-lava focus:outline-none transition-colors"
+            className="bg-card border border-edge rounded-lg px-3 py-1.5 text-sm text-paper focus:border-lava focus:outline-none transition-colors"
           >
             {languages.map((l) => (
               <option key={l.language} value={l.language}>
@@ -76,7 +76,7 @@ export default function Ranking() {
                 className={`px-3 py-1 text-xs rounded transition-all ${
                   metric === m.key
                     ? 'bg-lava text-white'
-                    : 'text-soft hover:text-[#e5e5e5]'
+                    : 'text-soft hover:text-paper'
                 }`}
               >
                 {m.label}
@@ -140,7 +140,7 @@ export default function Ranking() {
                       </td>
                       <td className="py-3 pr-4">
                         <Link to={`/repo/${repo.id}`}>
-                          <span className="font-medium text-[#e5e5e5] hover:text-lava transition-colors">
+                          <span className="font-medium text-paper hover:text-lava transition-colors">
                             {repo.full_name}
                           </span>
                           {repo.description && (
@@ -151,7 +151,7 @@ export default function Ranking() {
                         </Link>
                       </td>
                       <td className="py-3 pr-4 text-right hidden sm:table-cell">
-                        <span className="font-mono text-[#e5e5e5] tabular">
+                        <span className="font-mono text-paper tabular">
                           {snap?.stars_count?.toLocaleString() ?? '—'}
                         </span>
                       </td>

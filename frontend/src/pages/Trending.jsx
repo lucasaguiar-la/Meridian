@@ -34,7 +34,7 @@ export default function Trending() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
         <div>
-          <h1 className="text-lg font-semibold text-[#e5e5e5]">Trending</h1>
+          <h1 className="text-lg font-semibold text-paper">Trending</h1>
           <p className="text-xs text-soft mt-0.5">
             Repositórios com maior crescimento de estrelas
           </p>
@@ -50,7 +50,7 @@ export default function Trending() {
                 className={`px-3 py-1 text-xs rounded transition-all ${
                   days === opt.value
                     ? 'bg-lava text-white'
-                    : 'text-soft hover:text-[#e5e5e5]'
+                    : 'text-soft hover:text-paper'
                 }`}
               >
                 {opt.label}
@@ -62,7 +62,7 @@ export default function Trending() {
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="bg-card border border-edge rounded-lg px-3 py-1 text-sm text-[#e5e5e5] focus:border-lava focus:outline-none transition-colors"
+            className="bg-card border border-edge rounded-lg px-3 py-1 text-sm text-paper focus:border-lava focus:outline-none transition-colors"
           >
             <option value="">Todas linguagens</option>
             {languages.map((l) => (
